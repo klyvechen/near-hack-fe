@@ -2,7 +2,8 @@ import Hello from './Hello';
 
 import './App.css';
 import {
-  HashRouter as Router,
+  BrowserRouter,
+  Routes,
   Switch,
   Route,
   Link
@@ -13,9 +14,11 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function App() {
   return (
-    <Router path="/hello">
-        <Hello/>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/hello" element={<Hello/>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

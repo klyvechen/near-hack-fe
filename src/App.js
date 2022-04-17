@@ -1,4 +1,5 @@
 import Hello from './Hello';
+import Home from './Home';
 
 import './App.css';
 import {
@@ -14,11 +15,14 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/hello" element={<Hello/>}></Route>
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="/hello" element={<Hello/>}></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

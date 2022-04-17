@@ -7,24 +7,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 Buffer.from('anything','base64');
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
-async function login(accountName, contract, params) {
-  const { keyStores, KeyPair, connect } = nearApi;
-  const keyStore = new keyStores.InMemoryKeyStore();
-  const keyPair = "ed25519:35xBX9pb68LiGhDYD7EMvcfJ2EnMuqt3GV6Kt89RJDWKozDZZppZd3pvUhaLRDyBJgQZqh2kck3zE6f22zqThYp8";
-  console.log(keyPair.secretKey)
-  await keyStore.setKey("testnet", "klyve-hack.testnet", keyPair)
-  const config = {
-      networkId: "testnet",
-      keyStore, 
-      nodeUrl: "https://rpc.testnet.near.org",
-      walletUrl: "https://wallet.testnet.near.org",
-      helperUrl: "https://helper.testnet.near.org",
-      explorerUrl: "https://explorer.testnet.near.org",
-  };
-  const near = await connect(config)
-  const account = await near.account(accountName);
-  console.log(await account.state())
-  return account
+
+const { keyStores, KeyPair, connect, WalletConnection } = nearApi;
+const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+const testnetConfig = {
+  networkId: "testnet",
+  keyStore, 
+  nodeUrl: "https://rpc.testnet.near.org",
+  walletUrl: "https://wallet.testnet.near.org",
+  helperUrl: "https://helper.testnet.near.org",
+  explorerUrl: "https://explorer.testnet.near.org",
 }
 
 async function callContract(account, nameArg) {
@@ -39,15 +31,14 @@ async function callContract(account, nameArg) {
           sender: account, // account object to initialize and sign transactions.
       }
   );
-  console.log(contract)
-  const result = await contract.hello({"name": nameArg})
-  console.log(result)
-  return result;
+  return await contract.hello({"name": nameArg})
 }
 
 async function nearSayHello(name) {
-  const account = await login("klyve-hack.testnet");
-  const msg = await callContract(account, name);
+  const near = await connect(testnetConfig)
+  let wallet  = new WalletConnection(near);
+  console.log(wallet.account())
+  const msg = await callContract(wallet.account(), name);
   alert(msg)
 }
 

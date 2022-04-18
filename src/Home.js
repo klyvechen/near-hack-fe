@@ -20,7 +20,7 @@ function Home() {
 
         <NavLink exact activeClassName="active" to="/hello"> Hello </NavLink>
 
-        <NavLink exact activeClassName="active" to="/"> Second </NavLink>
+        <NavLink exact activeClassName="active" to="/signIn"> SignIn </NavLink>
 
       </header>
     </div>

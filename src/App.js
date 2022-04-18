@@ -1,5 +1,7 @@
 import Hello from './Hello';
 import Home from './Home';
+import SignIn from './SignIn';
+import ShowNFTs from './ShowNFTs';
 
 import './App.css';
 import {
@@ -20,6 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/hello" element={<Hello/>}></Route>
+          <Route path="/signIn" element={<SignIn/>}></Route>
+          <Route path="/showNfts" element={<ShowNFTs/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

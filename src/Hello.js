@@ -36,7 +36,7 @@ async function callContract(account, nameArg) {
 
 async function nearSayHello(name) {
   const near = await connect(testnetConfig)
-  let wallet  = new WalletConnection(near);
+  const wallet  = new WalletConnection(near);
   console.log(wallet.account())
   const msg = await callContract(wallet.account(), name);
   alert(msg)

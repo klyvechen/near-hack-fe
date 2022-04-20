@@ -49,10 +49,17 @@ function SignIn() {
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <h2>Near Hack Klyve</h2>
         {!connected ? 
-          <Button variant="primary" id="btn" onClick={()=> {
-            const signed = signIn();
-            setConnected(signed)
-          }}>Sign In</Button> :
+          <>
+            <Button variant="primary" id="btn" onClick={()=> {
+              const signed = signIn();
+              setConnected(signed)
+            }}>Sign In</Button> 
+            <div className="container">
+            <small className="text-muted">
+              Try to sign in 
+            </small>
+          </div>
+          </>:
           <>Welcome! You are connected!
           <Button variant="primary" id="btn" onClick={()=> {
             signOut()
@@ -60,11 +67,6 @@ function SignIn() {
           }}>Disconnect</Button>
           </>
         }
-        <div className="container">
-          <small className="text-muted">
-            Try to sign in 
-          </small>
-        </div>
       </header>
     </div>
   );

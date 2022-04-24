@@ -33,8 +33,6 @@ async function showFtBalance(setFtBalance) {
   setFtBalance(result)
 }
 
-
-
 async function ftFaucet() {
   // const result1 = await util.call(ft_contract, 'ft_transfer', { sender_id: "", amount: "100" })`
   await util.call(ftContractName, 'ft_transfer_from', [{ sender_id: "klyve-hack.testnet", amount: 100}, "300000000000000", "1"])
@@ -56,10 +54,14 @@ async function connectFtContract() {
 
 async function handleLikelyNFTs(setShowNfts) {
   const nftContracts = await util.getLikelyNFTs()
+  var filtered = nftContracts.filter(function(value, index, arr){ 
+    return value !== nftContractName;
+  });
+  filtered = [nftContractName, ...filtered]
   const viewNftMethods = ['nft_total_supply', 'nft_tokens', 'nft_supply_for_owner', 'nft_tokens_for_owner']
   const changeNftMethods = []
   const walletId = util.getWallet().getAccountId()
-  for (var c of nftContracts) {
+  for (var c of filtered) {
     await util.connectContract(c, viewNftMethods, changeNftMethods)
     nfts[c] = await util.call(c, 'nft_tokens_for_owner', [{ account_id: walletId }])
   }

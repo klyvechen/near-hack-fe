@@ -21,6 +21,8 @@ async function mintByNear(amount) {
 
 
 async function mintByFt() {
+  const yoctoAmount = (0.01 * 1000000000000000000000000).toLocaleString('fullwide', { useGrouping: false }) 
+  await util.call(nftContractName, 'nft_mint_by_ft', [{ ft_amount: "200" }, "300000000000000", yoctoAmount])
 
 }
 
@@ -134,7 +136,7 @@ export default function ShowNFTs() {
               N to mint 
               <br/>
               <Button variant="primary" id="mint" onClick={()=> {
-
+                mintByFt()
               }}>Mint By Big Nana</Button>
               <Button variant="primary" id="mint" onClick={()=> {
                 ftFaucet()

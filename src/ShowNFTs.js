@@ -13,6 +13,8 @@ let ft_contract;
 let ftContractName = 'klyve-hack-ft.klyve-hack.testnet';
 let nftContractName = 'klyve-hack-nft.klyve-hack.testnet';
 
+const ONE_NEAR = 1000000000000000000000000;
+
 async function mintByNear(amount) {
   const walletId = util.getWallet().getAccountId()
   const yoctoAmount = (amount * 1000000000000000000000000).toLocaleString('fullwide', { useGrouping: false }) 
@@ -35,7 +37,9 @@ async function showFtBalance(setFtBalance) {
 
 async function ftFaucet() {
   // const result1 = await util.call(ft_contract, 'ft_transfer', { sender_id: "", amount: "100" })`
-  await util.call(ftContractName, 'ft_transfer_from', [{ sender_id: "klyve-hack.testnet", amount: 100}, "300000000000000", "1"])
+  const yoctoAmount = await util.call(ftContractName, 'storage_balance_of', [{ sender_id: "klyve-hack.testnet"}]) != null ? 1 : 0.01 * ONE_NEAR
+  const yoctoString = yoctoAmount.toLocaleString('fullwide', { useGrouping: false })
+  await util.call(ftContractName, 'ft_transfer_from', [{ sender_id: "klyve-hack.testnet", amount: 100}, "300000000000000", yoctoString])
 }
 
 async function connectNFtContract() {
@@ -46,7 +50,7 @@ async function connectNFtContract() {
 
 
 async function connectFtContract() {
-  const viewMethods = ['ft_balance_of']
+  const viewMethods = ['ft_balance_of', 'storage_balance_of']
   const changeMethods = ['ft_transfer', 'ft_transfer_from']
   await util.connectContract(ftContractName, viewMethods, changeMethods)
 }

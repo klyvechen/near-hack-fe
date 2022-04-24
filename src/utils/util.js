@@ -35,7 +35,7 @@ export const util = {
         return wallet
     },
 
-    getWalletStatus() {
+    isConnected() {
         return status
     },
 
@@ -77,7 +77,7 @@ export const util = {
     },
 
     async call(contractName, method, args) {
-        return await contracts[contractName][method](args)
+        return await contracts[contractName][method](...args)
     }
 
 }

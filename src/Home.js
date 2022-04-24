@@ -22,6 +22,7 @@ function Home() {
 
         <NavLink exact activeClassName="active" to="/signIn"> SignIn </NavLink>
 
+        <NavLink exact activeClassName="active" to="/showNfts"> Show NFTs </NavLink>
       </header>
     </div>
   );

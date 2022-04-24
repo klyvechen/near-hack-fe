@@ -36,8 +36,8 @@ async function showFtBalance(setFtBalance) {
 }
 
 async function ftFaucet() {
-  // const result1 = await util.call(ft_contract, 'ft_transfer', { sender_id: "", amount: "100" })`
-  const yoctoAmount = await util.call(ftContractName, 'storage_balance_of', [{ sender_id: "klyve-hack.testnet"}]) != null ? 1 : 0.01 * ONE_NEAR
+  const walletId = util.getWallet().getAccountId()
+  const yoctoAmount = await util.call(ftContractName, 'storage_balance_of', [{ account_id: walletId}]) != null ? 1 : 0.01 * ONE_NEAR
   const yoctoString = yoctoAmount.toLocaleString('fullwide', { useGrouping: false })
   await util.call(ftContractName, 'faucet', [{}, "300000000000000", yoctoString])
 }
@@ -76,14 +76,13 @@ async function handleLikelyNFTs(setShowNfts) {
   setShowNfts(show)
 }
 
-async function initPage(setShowNfts, setFtBalance) {
+async function initPage(setShowNfts, setFtBalance, setConnected) {
+  setConnected(util.isConnected())
   handleLikelyNFTs(setShowNfts)
   await connectFtContract()
   showFtBalance(setFtBalance)
   await connectNFtContract()
 }
-
-
 
 export default function ShowNFTs() {
 
@@ -93,10 +92,10 @@ export default function ShowNFTs() {
   const [amountToMint, setAmountToMint] = useState(1);
 
   useEffect(() => {
-    console.log(util.getWallet());
-    setConnected(util.isConnected())
+    console.log(util.getWallet())
+    console.log(util.isConnected())
     if (util.getWallet().isSignedIn()) {
-      initPage(setShowNfts, setFtBalance)
+      initPage(setShowNfts, setFtBalance, setConnected)
     }
   }, [connected])
   return (
@@ -108,8 +107,7 @@ export default function ShowNFTs() {
         {!connected ? 
           <>
             <Button variant="primary" id="btn" onClick={()=> {
-              const signed = util.signIn();
-              setConnected(signed)
+              util.signIn();
             }}>Sign In</Button> 
             <div className="container">
               <small className="text-muted">
@@ -121,11 +119,9 @@ export default function ShowNFTs() {
             <p>Welcome <strong>{util.getWallet().getAccountId()}</strong> ! You are connected!</p>
             <p>Your <strong>Big Nana</strong>  Balance: {ftBalance / 100}</p>
             <Button variant="primary" id="btn" onClick={()=> {
-              const out = util.signOut()
-              setConnected(out)
-              if (out) {
-                setShowNfts([])
-              }
+              util.signOut()
+              setConnected(false)
+              setShowNfts([])
             }}>Disconnect</Button>
           </>
         }

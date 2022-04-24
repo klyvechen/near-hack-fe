@@ -40,7 +40,7 @@ export const util = {
     },
 
     async signOut() {
-        await wallet.signOut()
+        return await wallet.signOut()
     },
 
     async signIn() {

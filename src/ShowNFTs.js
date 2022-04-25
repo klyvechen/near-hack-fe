@@ -102,7 +102,7 @@ export default function ShowNFTs() {
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <h2>Near Hack klyve</h2>
+        <h2 style={{color: "teal"}}>Near Hack klyve</h2>
         <h3>mint & show NFTs</h3>
         {!connected ? 
           <>
@@ -116,8 +116,8 @@ export default function ShowNFTs() {
             </div>
           </>:
           <>
-            <p>Welcome <strong>{util.getWallet().getAccountId()}</strong> ! You are connected!</p>
-            <p>Your <strong>Big Nana</strong>  Balance: {ftBalance / 100}</p>
+            <p>Welcome <strong style={{color: "silver"}}>{util.getWallet().getAccountId()}</strong> ! You are connected!</p>
+            <p>Your <strong>$Big Nana</strong>  Balance: {ftBalance / 100}</p>
             <Button variant="primary" id="btn" onClick={()=> {
               util.signOut()
               setConnected(false)
@@ -126,37 +126,82 @@ export default function ShowNFTs() {
           </>
         }
         {connected &&
-          <div className="w-60">
+          <div style={{width:"60%"}} >
             <div className="border border-secondary">
-              <div>
-                Mint the NFT
+              <div className="border border-secondary">
+                <div className="row">
+                  <div className="col-12">
+                    Mint nft by NEAR
+                  </div>
+                  <div className="col-4">
+                    <Button variant="primary" id="mint" onClick={()=> {
+                      mintByNear(amountToMint)
+                    }}>Mint By Near</Button>
+                  </div>
+                  <div className="col-8">
+                    <small style={{fontSize:"20px"}} >
+                      use
+                      <input style={{width: "50px", textAlign: "center"}} type="text" value={amountToMint} onChange={(e)=>{setAmountToMint(e.target.value)}}/>
+                      N to mint 
+                    </small> 
+                  </div>
+                  <div className="col-12">
+                    <small style={{fontSize:"16px"}} >
+                      Mint the nft by the $Near 
+                      You need 1 $Near to mint<br/> 
+                      If you enter a number over than 1, 
+                      we will refund the extra amount back to you. <br/>
+                    </small>
+                  </div>
+                  <br/>
+                </div>
               </div>
-              <Button variant="primary" id="mint" onClick={()=> {
-                mintByNear(amountToMint)
-              }}>Mint By Near</Button>
-              amount <input  style={{width: "100px", textAlign: "center"}} type="text" value={amountToMint} onChange={(e)=>{setAmountToMint(e.target.value)}}/>
-              N to mint 
-              <br/>
-              <Button variant="primary" id="mint" onClick={()=> {
-                mintByFt()
-              }}>Mint By Big Nana</Button>
-              <Button variant="primary" id="mint" onClick={()=> {
-                ftFaucet()
-              }}>Big Nana Faucet</Button>
+              <div className="border border-secondary">
+                <div className="row">
+                  <div className="col-12">
+                    Mint nft by Fungible-Token
+                  </div>
+                  <div className="col-4">
+                    <Button variant="primary" id="mint" onClick={()=> {
+                      mintByFt()
+                    }}>Mint By Big Nana</Button>
+                  </div>
+                  <div className="col-8">
+                    <Button variant="primary" id="mint" onClick={()=> {
+                      ftFaucet()
+                    }}>Big Nana Faucet</Button>
+                  </div>
+                  <div className="col-12">
+                    <small style={{fontSize:"16px"}}>
+                      Mint the nft by the fungible token $Big Nana. 
+                      If you want to use the $Big Nana to mint,<br/> 
+                      please use the faucet to get the $Big Nana first, 
+                      and you have enough $Big Nana to mint. <br/> 
+                      You will get 10 $Big Nana for every faucet. <br/> 
+                    </small>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="border border-secondary">
               <div>
                 Your currnet NFTs
               </div>
-              { showNfts.length > 0 && showNfts.map((n, i) => {
-                return <div className="card" key={'nft-card' + i}>
-                <img className="card-img-top" alt="Card image cap" src={n.metadata.media} key={'nft' + i}></img>
-                <div className="card-body">
-                  <h5 className="card-title text-primary">{n.metadata.title}</h5>
-                  <p className="card-text text-secondary">{n.metadata.description}</p>
-                  {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
-                </div>
-                </div> })}
+              <div className="row">      
+                { showNfts.length > 0 && showNfts.map((n, i) => {
+                  return ( 
+                    <div className="col-lg-6 col-md-6 col-sm-12">
+                      <div className="card d-flex justify-content-around" key={'nft-card' + i}>
+                        <img className="card-img-top" alt="Card image cap" src={n.metadata.media} key={'nft' + i}></img>
+                        <div className="card-body">
+                          <h5 className="card-title text-primary">{n.metadata.title}</h5>
+                          <p className="card-text text-secondary">{n.metadata.description}</p>
+                          {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
+                        </div>
+                      </div>
+                    </div>)
+                })}
+              </div>
             </div>
           </div>
         }
